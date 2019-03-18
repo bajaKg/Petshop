@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PetShopDB" Class="DataClassesPetShopDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\PetShopDB.mdf;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PetShopDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.kategorija" Member="kategorijas">
+    <Type Name="kategorija">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Naziv" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="kategorija_proizvod" Member="proizvods" ThisKey="ID" OtherKey="ID_Kategorije" Type="proizvod" />
+    </Type>
+  </Table>
+  <Table Name="dbo.proizvod" Member="proizvods">
+    <Type Name="proizvod">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Naziv" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Cena" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Opis" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="Slika" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="Tip" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="ID_Kategorije" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="proizvod_korpa" Member="korpas" ThisKey="ID" OtherKey="ID_Proizvoda" Type="korpa" />
+      <Association Name="proizvod_komentar" Member="komentars" ThisKey="ID" OtherKey="ID_Proizvoda" Type="komentar" />
+      <Association Name="kategorija_proizvod" Member="kategorija" ThisKey="ID_Kategorije" OtherKey="ID" Type="kategorija" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.komentar_view" Member="komentar_views">
+    <Type Name="komentar_view">
+      <Column Name="Naziv" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Cena" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Kolicina" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.korpa" Member="korpas">
+    <Type Name="korpa">
+      <Column Name="ID_Proizvoda" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID_Korisnika" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Kolicina" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="proizvod_korpa" Member="proizvod" ThisKey="ID_Proizvoda" OtherKey="ID" Type="proizvod" IsForeignKey="true" />
+      <Association Name="korisnik_korpa" Member="korisnik" ThisKey="ID_Korisnika" OtherKey="ID" Type="korisnik" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.komentar" Member="komentars">
+    <Type Name="komentar">
+      <Column Name="ID_Proizvoda" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID_Korisnika" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Sadrzaj" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="Datum" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="ID_Komentara" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="proizvod_komentar" Member="proizvod" ThisKey="ID_Proizvoda" OtherKey="ID" Type="proizvod" IsForeignKey="true" />
+      <Association Name="korisnik_komentar" Member="korisnik" ThisKey="ID_Korisnika" OtherKey="ID" Type="korisnik" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.korisnik" Member="korisniks">
+    <Type Name="korisnik">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Ime" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Prezime" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Passwrod" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="EMail" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="korisnik_korpa" Member="korpas" ThisKey="ID" OtherKey="ID_Korisnika" Type="korpa" />
+      <Association Name="korisnik_komentar" Member="komentars" ThisKey="ID" OtherKey="ID_Korisnika" Type="komentar" />
+    </Type>
+  </Table>
+</Database>
